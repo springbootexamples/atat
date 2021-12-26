@@ -1,0 +1,38 @@
+files:
+  input: i.csv
+  exclude: blacklist.csv
+tradingview:
+  # The chart which has the indicator you'd like to use
+  chartUrl: https://www.tradingview.com/chart/XXXX/
+  # (optional) set the chart interval before adding pairs, otherwise interval of last saved chart is used
+  # examples: 1s | 30s | 1m | 15m | 1h | 1D | 1M
+  interval: 1D
+  # Optionally supply login details or login manually once and restart script
+  #username: JimmyJohnson
+  #password: SuperSecret
+alert:
+  condition: # tertiary/quaternary rows might not exist for your indicator. If not remove those values
+    primaryLeft: Regular session
+    primaryRight:
+    secondary: Crossing Up
+    tertiaryLeft: Value
+    tertiaryRight: "{{tertiaryRight}}"
+    quaternaryLeft:
+    quaternaryRight:
+  option: Only Once
+  actions:
+    notifyOnApp: true
+    showPopup: true
+    sendEmail: true
+    webhook:
+      enabled: false
+      url: "http://i/trading_view"
+  # alert name is optional - can override in csv if you add a "name" column. can use {{symbol|base|quote}}
+  name: "{{symbol}} for {{base}} {{quote}}"
+  # indentation matters! {{quote}} and {{base}} are swapped out for quote asset(eg. USDT) and the base (eg. BTC)
+  message: >
+    {
+         "delay_seconds": 0,
+        "pair": "{{exchange}}:{{ticker}}, price = {{close}}, volume = {{volume}} {{close}}, {{open}}, {{high}}, {{low}}, {{time}}, {{volume}}"
+        
+    }
